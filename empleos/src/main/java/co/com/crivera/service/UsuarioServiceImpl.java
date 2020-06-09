@@ -52,7 +52,7 @@ public class UsuarioServiceImpl implements UsuarioService
         }else {
             usuarioEntity.setFechaRegistro(new Date());
         }
-        //TODO FALAN LOS PERFILES
+        //TODO FALTAN LOS PERFILES
         //usuarioEntity.setPerfiles(perfiles);
         getUsuarioRepository().save(usuarioEntity);
     }
