@@ -38,11 +38,13 @@ public interface UsuarioService
     public void eliminar(Integer idUsuario);
     
     /**
-     * Consultar todos los usuarios
+     * Consulta usuario por username
      * @author Camilo Rivera
      * @version 0.0.1 2020/06/02
      * @since 0.0.1 2020/06/02
      * @return
      */
     public List<Usuario> buscarTodos() ;
+    
+    Usuario buscarPorNombreUsuario(String username);
 }

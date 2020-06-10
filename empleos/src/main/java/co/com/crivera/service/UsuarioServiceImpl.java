@@ -15,7 +15,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.com.crivera.entity.PerfilEntity;
 import co.com.crivera.entity.UsuarioEntity;
+import co.com.crivera.model.Perfil;
 import co.com.crivera.model.Usuario;
 import co.com.crivera.repository.UsuarioRepository;
 
@@ -27,11 +29,12 @@ import co.com.crivera.repository.UsuarioRepository;
 @Service
 public class UsuarioServiceImpl implements UsuarioService
 {
-
+    
     @Autowired
     private UsuarioRepository usuarioRepository;
     
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see co.com.crivera.service.UsuarioService#guardar(co.com.crivera.model.Usuario)
      * @author Camilo Rivera
      * @version 0.0.1 2020/06/02
@@ -47,17 +50,21 @@ public class UsuarioServiceImpl implements UsuarioService
         usuarioEntity.setNombre(usuario.getNombre());
         usuarioEntity.setPassword(usuario.getPassword());
         usuarioEntity.setUsuario(usuario.getUsername());
-        if(usuario.getFechaRegistro()!=null) {
+        if (usuario.getFechaRegistro() != null)
+        {
             usuarioEntity.setFechaRegistro(usuario.getFechaRegistro());
-        }else {
+        }
+        else
+        {
             usuarioEntity.setFechaRegistro(new Date());
         }
-        //TODO FALTAN LOS PERFILES
-        //usuarioEntity.setPerfiles(perfiles);
+        // TODO FALTAN LOS PERFILES
+        // usuarioEntity.setPerfiles(perfiles);
         getUsuarioRepository().save(usuarioEntity);
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
      * @see co.com.crivera.service.UsuarioService#eliminar(java.lang.Integer)
      * @author Camilo Rivera
      * @version 0.0.1 2020/06/02
@@ -69,8 +76,9 @@ public class UsuarioServiceImpl implements UsuarioService
         getUsuarioRepository().deleteById(idUsuario);
         
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
      * @see co.com.crivera.service.UsuarioService#buscarTodos()
      * @author Camilo Rivera
      * @version 0.0.1 2020/06/02
@@ -79,15 +87,29 @@ public class UsuarioServiceImpl implements UsuarioService
     @Override
     public List<Usuario> buscarTodos()
     {
-        List<UsuarioEntity> usuariosEntity =getUsuarioRepository().findAll();
-        List<Usuario> usuarios  = new ArrayList<>(usuariosEntity.size());
-        usuariosEntity.forEach(usuarioEntity-> usuarios.add(convertUsuarioEntityToUsuario(usuarioEntity)));
+        List<UsuarioEntity> usuariosEntity = getUsuarioRepository().findAll();
+        List<Usuario> usuarios = new ArrayList<>(usuariosEntity.size());
+        usuariosEntity.forEach(usuarioEntity -> usuarios.add(convertUsuarioEntityToUsuario(usuarioEntity)));
         return usuarios;
     }
-
+    
+    /*
+     * (non-Javadoc)
+     * @see co.com.crivera.service.UsuarioService#buscarPorNombreUsuario(java.lang.String)
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/09
+     * @since 0.0.1 2020/06/09
+     */
+    @Override
+    public Usuario buscarPorNombreUsuario(String username)
+    {
+        UsuarioEntity usuarioEntity = getUsuarioRepository().findByUsuario(username);
+        return convertUsuarioEntityToUsuario(usuarioEntity);
+    }
+    
     /**
      * @author Camilo Rivera
-     * @version 0.0.1 2020/06/02
+     * @version 0.0.1 2020/06/09
      * @since 0.0.1 2020/06/02
      * @param usuarioEntity
      * @return
@@ -103,11 +125,32 @@ public class UsuarioServiceImpl implements UsuarioService
         usuario.setPassword(usuarioEntity.getPassword());
         usuario.setUsername(usuarioEntity.getUsuario());
         
+        List<Perfil> perfiles = new ArrayList<>();
+        if (usuarioEntity.getPerfiles() != null)
+        {
+            usuarioEntity.getPerfiles().forEach(entidadPerfil -> perfiles.add(convertPerfilEntityToPerfil(entidadPerfil)));
+        }
         
-        //usuario.setPerfiles(perfiles);
+        usuario.setPerfiles(perfiles);
         return usuario;
     }
-
+    
+    /**
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/09
+     * @since 0.0.1 2020/06/09
+     * @param entidadPerfil
+     * @return
+     */
+    private Perfil convertPerfilEntityToPerfil(PerfilEntity entidadPerfil)
+    {
+        Perfil perfil = new Perfil();
+        perfil.setId(entidadPerfil.getId());
+        perfil.setDescripcion(entidadPerfil.getDescripcion());
+        perfil.setNombre(entidadPerfil.getNombre());
+        return perfil;
+    }
+    
     /**
      * @return Regresa el valor del campo usuarioRepository
      * @author Camilo Rivera
@@ -117,5 +160,6 @@ public class UsuarioServiceImpl implements UsuarioService
     public UsuarioRepository getUsuarioRepository()
     {
         return usuarioRepository;
-    }  
+    }
+    
 }

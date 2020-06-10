@@ -10,8 +10,12 @@ package co.com.crivera.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -108,6 +112,31 @@ public class HomeController
         List<Vacante> vacantes = getVacanteService().buscarPorExample(vacante);
         model.addAttribute("vacantes", vacantes);
         return "home";
+        
+    }
+    
+    /**
+     * Navegacion para solicitar login de usuario
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/09
+     * @since 0.0.1 2020/06/09
+     * @param usuario
+     * @return
+     */
+    @GetMapping("/index")
+    public String mostrarIndex(Authentication auth, HttpSession session)
+    {
+        String username = auth.getName();
+        for(GrantedAuthority rol: auth.getAuthorities()) {
+            System.out.println("rol: "+rol.getAuthority());
+        }
+        
+        if(session.getAttribute("usuario")!=null) {
+        Usuario usuario =  getUsuarioService().buscarPorNombreUsuario(username);
+        usuario.setPassword(null);
+        session.setAttribute("usuario", usuario);
+        }
+        return "redirect:/";
         
     }
     
