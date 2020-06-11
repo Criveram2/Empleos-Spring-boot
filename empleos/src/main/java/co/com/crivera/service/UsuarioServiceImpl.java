@@ -32,12 +32,13 @@ public class UsuarioServiceImpl implements UsuarioService
     
     @Autowired
     private UsuarioRepository usuarioRepository;
+
     
     /*
      * (non-Javadoc)
      * @see co.com.crivera.service.UsuarioService#guardar(co.com.crivera.model.Usuario)
      * @author Camilo Rivera
-     * @version 0.0.1 2020/06/02
+     * @version 0.0.1 2020/06/10
      * @since 0.0.1 2020/06/02
      */
     @Override
@@ -57,9 +58,14 @@ public class UsuarioServiceImpl implements UsuarioService
         else
         {
             usuarioEntity.setFechaRegistro(new Date());
+        }      
+        List<PerfilEntity> perfilesEntity = new ArrayList<>();
+        if (usuario.getPerfiles() != null)
+        {
+            usuario.getPerfiles().forEach(perfil -> perfilesEntity.add(convertPerfilToPerfilEntity(perfil)));
         }
-        // TODO FALTAN LOS PERFILES
-        // usuarioEntity.setPerfiles(perfiles);
+        
+        usuarioEntity.setPerfiles(perfilesEntity);
         getUsuarioRepository().save(usuarioEntity);
     }
     
@@ -149,6 +155,24 @@ public class UsuarioServiceImpl implements UsuarioService
         perfil.setDescripcion(entidadPerfil.getDescripcion());
         perfil.setNombre(entidadPerfil.getNombre());
         return perfil;
+    }
+    
+    
+    /**
+     * Convierte un perfil en entidad perfil
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/10
+     * @since 0.0.1 2020/06/1o
+     * @param entidadPerfil
+     * @return
+     */
+    private PerfilEntity convertPerfilToPerfilEntity(Perfil perfil)
+    {
+        PerfilEntity perfilEntity = new PerfilEntity();
+        perfilEntity.setId(perfil.getId());
+        perfilEntity.setDescripcion(perfil.getDescripcion());
+        perfilEntity.setNombre(perfil.getNombre());
+        return perfilEntity;
     }
     
     /**

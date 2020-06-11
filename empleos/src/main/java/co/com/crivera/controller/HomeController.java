@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.com.crivera.model.Categoria;
+import co.com.crivera.model.Perfil;
 import co.com.crivera.model.Usuario;
 import co.com.crivera.model.Vacante;
 import co.com.crivera.service.CategoriaService;
@@ -35,7 +37,7 @@ import co.com.crivera.service.VacanteService;
 /**
  * controlador para la pantalla Home
  * @author Camilo Rivera
- * @version 0.0.1 2020/05/19
+ * @version 0.0.1 2020/06/10
  * @since 0.0.1 2020/05/19
  */
 @Controller
@@ -47,7 +49,8 @@ public class HomeController
     CategoriaService       categoriaService;
     @Autowired
     private UsuarioService usuarioService;
-    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     /**
      * @author Camilo Rivera
      * @version 0.0.1 2020/05/19
@@ -92,7 +95,13 @@ public class HomeController
     @PostMapping("/signup")
     public String guardar(Usuario usuario, RedirectAttributes attributes)
     {
+        Perfil perfilDefecto= new Perfil(); 
+        perfilDefecto.setId(3);
+        usuario.agregarPerfil(perfilDefecto);
+        String pwdEncriptado  = passwordEncoder.encode(usuario.getPassword());
+        usuario.setPassword(pwdEncriptado);
         getUsuarioService().guardar(usuario);
+        
         attributes.addFlashAttribute("msg", "Registro Guardado");
         return "redirect:/usuarios/index";
         
@@ -131,7 +140,7 @@ public class HomeController
             System.out.println("rol: "+rol.getAuthority());
         }
         
-        if(session.getAttribute("usuario")!=null) {
+        if(session.getAttribute("usuario")==null) {
         Usuario usuario =  getUsuarioService().buscarPorNombreUsuario(username);
         usuario.setPassword(null);
         session.setAttribute("usuario", usuario);

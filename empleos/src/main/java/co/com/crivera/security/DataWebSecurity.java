@@ -9,12 +9,16 @@
 package co.com.crivera.security;
 
 import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Clase con configuracion de seguridad web
@@ -29,6 +33,13 @@ public class DataWebSecurity extends WebSecurityConfigurerAdapter
     @Autowired
     private DataSource dataSource;
     
+    /*
+     * (non-Javadoc)
+     * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/10
+     * @since 0.0.1 2020/06/10
+     */
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
         .usersByUsernameQuery("select usuario, password, estado from Usuarios where usuario=?")
@@ -38,6 +49,14 @@ public class DataWebSecurity extends WebSecurityConfigurerAdapter
                 + "where u.usuario=?");
     }
     
+    /*
+     * (non-Javadoc)
+     * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/10
+     * @since 0.0.1 2020/06/10
+     * Define los permisos de los roles para visualizar segmentos del proyecto "URLS"
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception{
     
@@ -59,5 +78,18 @@ public class DataWebSecurity extends WebSecurityConfigurerAdapter
         .anyRequest().authenticated().and().formLogin().permitAll();
         
     }
+    
+    /**
+     * Configuracion de codificar password
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/10
+     * @since 0.0.1 2020/06/10
+     * @return
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
     
 }

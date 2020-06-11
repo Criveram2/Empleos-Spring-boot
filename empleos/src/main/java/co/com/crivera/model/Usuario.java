@@ -9,6 +9,7 @@
 package co.com.crivera.model;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,9 +25,27 @@ public class Usuario
     private String             email;
     private String             username;
     private String             password;
-    private String             estado  = "Bloqueado";
+    private String             estado  = "1";
     private Date               fechaRegistro;
     private List<Perfil> perfiles;
+    
+    /**
+     * Adiciona un perfil que se le va a adicionar al usuario
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/10
+     * @since 0.0.1 2020/05/28
+     * @param perfil
+     */
+    public void agregarPerfil(Perfil perfil)
+    {
+        if (perfiles == null)
+        {
+            perfiles = new LinkedList<Perfil>();
+        }
+        perfiles.add(perfil);
+    }
+    
+    
     /**
      * @return Regresa el valor del campo id
      * @author Camilo Rivera
