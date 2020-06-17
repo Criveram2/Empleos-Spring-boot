@@ -51,7 +51,7 @@ public class UsuariosController
     }
     
     /**
-     * 
+     * Elimina un usuario por su Id
      * @author Camilo Rivera
      * @version 0.0.1 2020/06/02
      * @since 0.0.1 2020/06/02
@@ -65,6 +65,38 @@ public class UsuariosController
         getUsuarioService().eliminar(idUsuario);            
         attributes.addFlashAttribute("msg", "El usuario fue eliminado!.");
         return "redirect:/usuarios/index";
+    }
+    
+    /**
+     * Bloquea un usuario por su Id
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/16
+     * @since 0.0.1 2020/06/16
+     * @param idUsuario
+     * @param attributes
+     * @return
+     */
+    @GetMapping("/bloquear/{id}")
+    public String bloquearPorId(@PathVariable("id") int idUsuario, RedirectAttributes attributes) {  
+        getUsuarioService().bloquearPorId(idUsuario);
+        attributes.addFlashAttribute("msg", "El usuario fue bloqueado!.");
+        return "redirect:/usuarios/index"; 
+    }
+    
+    /**
+     * Desbloquea un usuario por su Id
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/16
+     * @since 0.0.1 2020/06/16
+     * @param idUsuario
+     * @param attributes
+     * @return
+     */
+    @GetMapping("/desbloquear/{id}")
+    public String desbloquearPorId(@PathVariable("id") int idUsuario, RedirectAttributes attributes) {  
+        getUsuarioService().desbloquearPorId(idUsuario);
+        attributes.addFlashAttribute("msg", "El usuario fue desbloqueado!.");
+        return "redirect:/usuarios/index"; 
     }
 
     /**

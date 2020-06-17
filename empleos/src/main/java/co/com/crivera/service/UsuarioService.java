@@ -46,5 +46,32 @@ public interface UsuarioService
      */
     public List<Usuario> buscarTodos() ;
     
+    /**
+     * buscar usuario por nombre 
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/16
+     * @since 0.0.1 2020/06/16
+     * @param username
+     * @return
+     */
     Usuario buscarPorNombreUsuario(String username);
+    
+    /**
+     * bloquear usuario por Id
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/02
+     * @since 0.0.1 2020/06/02
+     * @param idUsuario  identificador del usuario
+     */
+    public void bloquearPorId(Integer idUsuario);
+    
+    /**
+     * desbloquear usuario por Id
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/02
+     * @since 0.0.1 2020/06/02
+     * @param idUsuario identificador del usuario
+     */
+    public void desbloquearPorId(Integer idUsuario);
+    
 }

@@ -11,6 +11,7 @@ package co.com.crivera.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,10 @@ import co.com.crivera.repository.UsuarioRepository;
 public class UsuarioServiceImpl implements UsuarioService
 {
     
+    /** */
+    private static final String ESTADO_BLOQUEADO = "0";
+    /** */
+    private static final String ESTADO_DESBLOQUEADO = "1";
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -113,6 +118,45 @@ public class UsuarioServiceImpl implements UsuarioService
         return convertUsuarioEntityToUsuario(usuarioEntity);
     }
     
+    
+    /* (non-Javadoc)
+     * @see co.com.crivera.service.UsuarioService#bloquearPorId(java.lang.Integer)
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/16
+     * @since 0.0.1 2020/06/16
+     */
+    @Override
+    public void bloquearPorId(Integer idUsuario)
+    {
+        Optional<UsuarioEntity> usuarioEntity=  getUsuarioRepository().findById(idUsuario);
+        if(usuarioEntity.isPresent()) {
+            
+            UsuarioEntity usuario = usuarioEntity.get();
+            usuario.setEstado(ESTADO_BLOQUEADO);
+        getUsuarioRepository().save(usuario); 
+        }
+    }
+    
+    /* (non-Javadoc)
+     * @see co.com.crivera.service.UsuarioService#desbloquearPorId(java.lang.Integer)
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/16
+     * @since 0.0.1 2020/06/16
+     */
+    @Override
+    public void desbloquearPorId(Integer idUsuario)
+    {
+        Optional<UsuarioEntity> usuarioEntity=  getUsuarioRepository().findById(idUsuario);
+        if(usuarioEntity.isPresent()) {
+            
+            UsuarioEntity usuario = usuarioEntity.get();
+            usuario.setEstado(ESTADO_DESBLOQUEADO);
+        getUsuarioRepository().save(usuario); 
+        }
+        
+    } 
+    
+    
     /**
      * @author Camilo Rivera
      * @version 0.0.1 2020/06/09
@@ -185,5 +229,6 @@ public class UsuarioServiceImpl implements UsuarioService
     {
         return usuarioRepository;
     }
-    
+
+
 }

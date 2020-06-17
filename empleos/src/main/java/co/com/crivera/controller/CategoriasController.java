@@ -37,8 +37,9 @@ public class CategoriasController
 {
     @Autowired
     private CategoriaService categoriaService;
+    
     /**
-     * 
+     * Mostrar Index
      * @author Camilo Rivera
      * @version 0.0.1 2020/05/20
      * @since 0.0.1 2020/05/20
