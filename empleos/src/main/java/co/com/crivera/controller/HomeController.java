@@ -185,6 +185,17 @@ public class HomeController
     }
     
     /**
+     * Metodo que muesta la pagina de acerca de la pagina
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/17
+     * @since 0.0.1 2020/06/17
+     * @return
+     */
+    @GetMapping("/about")
+    public String mostrarAcerca() {         
+        return "acerca";
+    }
+    /**
      * InitBinder  para string si los detecta vacios en el Data Binding los settea Null
      * @author Camilo Rivera
      * @version 0.0.1 2020/06/02
