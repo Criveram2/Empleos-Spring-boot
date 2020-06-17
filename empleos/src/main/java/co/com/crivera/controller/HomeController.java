@@ -10,6 +10,7 @@ package co.com.crivera.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -154,6 +156,32 @@ public class HomeController
     {
         List<Categoria> categorias = getCategoriaService().buscarTodas();
         model.addAttribute("categorias", categorias);
+    }
+    
+    /**
+     * Redireccion a formulario de login
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/16
+     * @since 0.0.1 2020/06/16
+     * @return
+     */
+    @GetMapping("/login")
+    public String mostrarLogin() {
+        return "formLogin";
+    }
+    
+    /**
+     * Logout de la aplicacion
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/16
+     * @since 0.0.1 2020/06/16
+     * @return
+     */
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.logout(request, null, null);
+        return "redirect:login";
     }
     
     /**

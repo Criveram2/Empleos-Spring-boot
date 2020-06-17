@@ -75,7 +75,9 @@ public class DataWebSecurity extends WebSecurityConfigurerAdapter
         .antMatchers("/categorias/**").hasAnyAuthority("SUPERVISOR","ADMINISTRADOR")
         .antMatchers("/usuarios/**").hasAnyAuthority("ADMINISTRADOR")
         //Todas las demas urls requieren autenticacion
-        .anyRequest().authenticated().and().formLogin().permitAll();
+        .anyRequest().authenticated()
+        //El formulario de login no requiere Autorizacion
+        .and().formLogin().loginPage("/login").permitAll();
         
     }
     
