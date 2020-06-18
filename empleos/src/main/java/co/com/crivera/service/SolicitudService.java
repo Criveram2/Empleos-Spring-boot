@@ -39,4 +39,13 @@ public interface SolicitudService
      * @return
      */
     public Page<Solicitud> buscarTodas(Pageable pageable) ;
+    
+    /**
+     * Eliminar solicitud por id
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/18
+     * @since 0.0.1 2020/06/18
+     * @param idSolicitud
+     */
+    public void eliminar(Integer idSolicitud) ;
 }

@@ -92,8 +92,8 @@ public class SolicitudController
      * @author Camilo Rivera
      * @version 0.0.1 2020/06/17
      * @since 0.0.1 2020/06/17
-     * @param solicitud
-     * @param result
+     * @param solicitud datos de la solicitud
+     * @param result 
      * @param model
      * @param session
      * @param multiPart
@@ -137,6 +137,26 @@ public class SolicitudController
         // return "redirect:/solicitudes/index";
         return "redirect:/";
     }
+    
+    /**
+     * Elimina solicitud por id 
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/18
+     * @since 0.0.1 2020/06/18
+     * @param idSolicitud
+     * @param attributes
+     * @return
+     */
+    @GetMapping("/delete/{id}")
+    public String eliminar(@PathVariable("id") int idSolicitud, RedirectAttributes attributes) {
+        
+        // Eliminamos la solicitud.
+        getSolicitudService().eliminar(idSolicitud);
+        attributes.addFlashAttribute("msg", "La solicitud fue eliminada!.");
+        //return "redirect:/solicitudes/index";
+        return "redirect:/solicitudes/indexPaginate";
+    }
+        
     
     /**
      * @return Regresa el valor del campo vacanteService

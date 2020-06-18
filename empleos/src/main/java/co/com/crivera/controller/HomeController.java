@@ -25,7 +25,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.com.crivera.model.Categoria;
@@ -182,6 +184,17 @@ public class HomeController
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
         logoutHandler.logout(request, null, null);
         return "redirect:login";
+    }
+    
+    /**
+     * Utileria para encriptar texto con el algorito BCrypt
+     * @param texto
+     * @return
+     */
+    @GetMapping("/bcrypt/{texto}")
+    @ResponseBody
+    public String encriptar(@PathVariable("texto") String texto) {      
+        return texto + " Encriptado en Bcrypt: " + passwordEncoder.encode(texto);
     }
     
     /**

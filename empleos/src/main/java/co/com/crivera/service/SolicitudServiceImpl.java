@@ -85,6 +85,18 @@ public class SolicitudServiceImpl implements SolicitudService
         return solicitudesPaginados;
     }
 
+    /* (non-Javadoc)
+     * @see co.com.crivera.service.SolicitudService#eliminar(java.lang.Integer)
+     * @author Camilo Rivera
+     * @version 0.0.1 2020/06/18
+     * @since 0.0.1 2020/06/18
+     */
+    @Override
+    public void eliminar(Integer idSolicitud)
+    {
+        getSolicitudRepository().deleteById(idSolicitud);    
+    }
+    
     /**
      * @author Camilo Rivera
      * @version 0.0.1 2020/06/17
@@ -199,6 +211,4 @@ public class SolicitudServiceImpl implements SolicitudService
     {
         return solicitudRepository;
     }
-
- 
 }
